@@ -40,11 +40,11 @@ class ToiletLever {
   void begin() {
     ::pinMode(pin_, INPUT);
     changed_ = false;
-    last_ = isFlushing();
+    last_ = readPort();
   }
 
   void update() {
-    if (last_ != isFlushing()) {
+    if (last_ != readPort()) {
       changed_ = true;
       last_ = !last_;
     }
@@ -53,7 +53,7 @@ class ToiletLever {
   }
 
   bool isFlushing() const {
-    return ::digitalRead(pin_) == LOW;
+    return last_;
   }
 
   bool wasChanged() {
@@ -66,6 +66,10 @@ class ToiletLever {
   const int pin_;
   bool changed_;
   bool last_;
+
+  bool readPort() const {
+    return ::digitalRead(pin_) == LOW;
+  }
 };
 
 const int kSensorPort = 26;
