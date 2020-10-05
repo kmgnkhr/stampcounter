@@ -1,8 +1,12 @@
 #include <M5StickC.h>
+#include "toiletlever.h"
 
 namespace {
 
+const int kSensorPort = 26;
 int RemainCount = 0;
+
+ToiletLever lever(kSensorPort);
 
 void draw() {
   M5.Lcd.fillScreen(BLACK);
@@ -31,49 +35,6 @@ void draw() {
     M5.Lcd.print("Time for new stamp soon!");
   }
 }
-
-class ToiletLever {
- public:
-  explicit ToiletLever(int pin) : pin_(pin) {
-  }
-
-  void begin() {
-    ::pinMode(pin_, INPUT);
-    changed_ = false;
-    last_ = readPort();
-  }
-
-  void update() {
-    if (last_ != readPort()) {
-      changed_ = true;
-      last_ = !last_;
-    }
-    // waiting for stability
-    ::delay(5);
-  }
-
-  bool isFlushing() const {
-    return last_;
-  }
-
-  bool wasChanged() {
-    if (!changed_) return false;
-    changed_ = false;
-    return true;
-  }
-
- private:
-  const int pin_;
-  bool changed_;
-  bool last_;
-
-  bool readPort() const {
-    return ::digitalRead(pin_) == LOW;
-  }
-};
-
-const int kSensorPort = 26;
-ToiletLever lever(kSensorPort);
 
 }  // namespace
 
