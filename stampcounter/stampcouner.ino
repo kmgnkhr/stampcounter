@@ -51,9 +51,11 @@ void enterSleep() {
 }  // namespace
 
 void setup() {
+  auto wakeup_reason = esp_sleep_get_wakeup_cause();
+
   M5.begin();
   M5.Axp.ScreenBreath(8);
-  lever.begin();
+  lever.begin(wakeup_reason == ESP_SLEEP_WAKEUP_EXT1);
   sleep_counter.begin();
 
   draw();

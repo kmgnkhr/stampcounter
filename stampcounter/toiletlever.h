@@ -4,7 +4,7 @@
 class ToiletLever {
  public:
   explicit ToiletLever(int pin);
-  void begin();
+  void begin(bool changed);
   void update();
   bool isFlushing();
   bool wasChanged();

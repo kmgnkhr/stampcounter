@@ -12,9 +12,9 @@ bool readPort(int pin) {
 ToiletLever::ToiletLever(int pin) : pin_(pin) {
 }
 
-void ToiletLever::begin() {
+void ToiletLever::begin(bool changed) {
   ::pinMode(pin_, INPUT);
-  changed_ = false;
+  changed_ = changed;
   last_ = readPort(pin_);
 }
 
