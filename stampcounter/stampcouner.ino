@@ -5,6 +5,8 @@
 namespace {
 
 const int kSensorPort = 26;
+const int kPirPort = 36;
+
 RTC_DATA_ATTR int RemainCount = 0;
 
 ToiletLever lever(kSensorPort);
@@ -40,7 +42,9 @@ void draw() {
 
 void enterSleep() {
   ::esp_sleep_enable_ext0_wakeup(GPIO_NUM_37, LOW);
-  ::esp_sleep_enable_ext1_wakeup(BIT64(kSensorPort),ESP_EXT1_WAKEUP_ANY_HIGH);
+  ::esp_sleep_enable_ext1_wakeup(
+    BIT64(kSensorPort) | BIT64(kPirPort),
+    ESP_EXT1_WAKEUP_ANY_HIGH);
 
   M5.Axp.SetSleep();
   ::esp_deep_sleep_start();
@@ -56,6 +60,7 @@ void setup() {
   M5.begin();
   M5.Axp.ScreenBreath(8);
   lever.begin(wakeup_reason == ESP_SLEEP_WAKEUP_EXT1);
+  ::pinMode(kPirPort, INPUT);
   sleep_counter.begin();
 
   draw();
@@ -64,6 +69,10 @@ void setup() {
 void loop() {
   M5.update();
   lever.update();
+
+  if (::digitalRead(kPirPort) == HIGH) {
+    sleep_counter.reset();
+  }
 
   if (M5.BtnA.wasPressed()) {
     // new stamp
