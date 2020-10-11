@@ -41,7 +41,6 @@ void draw() {
 }
 
 void enterSleep() {
-  ::esp_sleep_enable_ext0_wakeup(GPIO_NUM_37, LOW);
   ::esp_sleep_enable_ext1_wakeup(
     BIT64(kSensorPort) | BIT64(kPirPort),
     ESP_EXT1_WAKEUP_ANY_HIGH);
