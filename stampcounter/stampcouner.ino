@@ -40,7 +40,7 @@ void draw() {
 
 void enterSleep() {
   ::esp_sleep_enable_ext0_wakeup(GPIO_NUM_37, LOW);
-  ::esp_sleep_enable_ext1_wakeup(BIT64(kSensorPort),ESP_EXT1_WAKEUP_ALL_LOW);
+  ::esp_sleep_enable_ext1_wakeup(BIT64(kSensorPort),ESP_EXT1_WAKEUP_ANY_HIGH);
 
   M5.Axp.SetSleep();
   ::esp_deep_sleep_start();

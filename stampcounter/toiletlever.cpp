@@ -4,7 +4,7 @@
 namespace {
 
 bool readPort(int pin) {
-  return ::digitalRead(pin) == LOW;
+  return ::digitalRead(pin) == HIGH;
 }
 
 }  // namespace
